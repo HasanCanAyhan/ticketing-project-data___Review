@@ -29,7 +29,7 @@ public class RoleDtoConverter implements Converter<String, RoleDTO> {
             return null;
         }
 
-        return roleService.findById(Long.parseLong(source));
+        return roleService.findById(Long.parseLong(source)); // first, implementation was null, then we made impl
 
     }
 
