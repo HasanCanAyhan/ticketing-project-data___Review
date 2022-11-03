@@ -5,6 +5,7 @@ import com.cydeo.entity.User;
 import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.UserRepository;
 import com.cydeo.service.UserService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +32,12 @@ public class UserServiceImpl implements UserService {
         //Service Impl return DTO
         //Repository return Entity
 
-        List<User> userList = userRepository.findAll(); // entity
+        List<User> userList = userRepository.findAll(Sort.by("firstName")); // go to DB and brings the users : entity
 
-        // we should return DTO, then it will go to controller for UI -Part
+        // we should return DTO in the ServiceImpl, then it will go to controller for UI -Part
 
-
-
+        return userList.stream()
+                .map(user -> userMapper.convertToDto(user)).collect(Collectors.toList());
 
 
     }
@@ -48,6 +49,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserDTO user) {
+
+        // save User(dto) which is coming from UI-Part in to DB as entity
+
+        User user1 = userMapper.convertToEntity(user); // converted to entity
+
+        userRepository.save(user1);
+
+        //After running app, then give userdata intoUi, then give me error:
+        //Property or field 'description' for role cannot be found on null : go to Role converter
 
     }
 

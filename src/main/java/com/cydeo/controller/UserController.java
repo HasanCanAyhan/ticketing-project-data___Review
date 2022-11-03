@@ -37,7 +37,7 @@ public class UserController {
 
 
 
-    @PostMapping("/create") // save button
+    @PostMapping("/create") // part2 : save button
     public String insertUser( @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {

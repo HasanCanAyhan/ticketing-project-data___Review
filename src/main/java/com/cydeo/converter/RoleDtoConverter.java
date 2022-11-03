@@ -23,7 +23,7 @@ public class RoleDtoConverter implements Converter<String, RoleDTO> {
     }
 
     @Override
-    public RoleDTO convert(String source) {
+    public RoleDTO convert(String source) { // ex : th :value is like "1":Admin , "2":Manager etc...we should return RoleDto object
 
         if (source == null || source.equals("")) {  //  Select  -> ""
             return null;
