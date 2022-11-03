@@ -56,19 +56,20 @@ public class UserController {
     }
 
 
-    /*
 
-    @GetMapping("/update/{username}")
+
+    @GetMapping("/update/{username}") //part2 : edit : update button
     public String editUser(@PathVariable("username") String username, Model model) {
 
-        model.addAttribute("user", userService.findById(username));
-        model.addAttribute("roles", roleService.findAll());
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("user", userService.findByUserName(username));
+        model.addAttribute("roles", roleService.listAllRoles());
+        model.addAttribute("users", userService.listAllUsers());
 
         return "/user/update";
 
     }
 
+     /*
     @PostMapping("/update")
     public String updateUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
 
