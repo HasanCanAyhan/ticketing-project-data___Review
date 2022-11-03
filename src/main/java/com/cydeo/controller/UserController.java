@@ -35,15 +35,15 @@ public class UserController {
 
     }
 
-    /*
 
-    @PostMapping("/create")
-    public String insertUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
+
+    @PostMapping("/create") // save button
+    public String insertUser( @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("roles", roleService.findAll());
-            model.addAttribute("users", userService.findAll());
+            model.addAttribute("roles", roleService.listAllRoles());
+            model.addAttribute("users", userService.listAllUsers());
 
             return "/user/create";
 
@@ -54,6 +54,9 @@ public class UserController {
         return "redirect:/user/create";
 
     }
+
+
+    /*
 
     @GetMapping("/update/{username}")
     public String editUser(@PathVariable("username") String username, Model model) {

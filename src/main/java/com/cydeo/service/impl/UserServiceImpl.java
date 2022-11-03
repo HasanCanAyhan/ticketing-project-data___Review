@@ -27,10 +27,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listAllUsers() {
 
+        //serviceImpl ->>> Repository --->> DataBase
+        //Service Impl return DTO
+        //Repository return Entity
 
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userRepository.findAll(); // entity
 
-        return userList.stream().map(user -> userMapper.convertToDto(user)).collect(Collectors.toList());
+        // we should return DTO, then it will go to controller for UI -Part
+
+
+
+
 
     }
 
