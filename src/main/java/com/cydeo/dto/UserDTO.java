@@ -16,9 +16,11 @@ public class UserDTO {
     @Size(max = 15, min = 2)
     private String firstName;
 
+
     @NotBlank
     @Size(max = 15, min = 2)
     private String lastName;
+
 
     @NotBlank
     @Email

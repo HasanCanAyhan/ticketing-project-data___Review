@@ -21,6 +21,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
    TransactionRequiredException: No EntityManager with actual transaction available for current thread
    - cannot reliably process 'remove' call
      */
+
     /*
     Transaction : is a defined set of mutable operations(operations that change data)
     These are essential in app bcs they ensure the data remains consistent if any step of the use case fails when the app already changed data
@@ -31,8 +32,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     If step 1 executes without a problem , but step 2 fails any reason, the app reverts the changes step 1 made.
     This operation is named "rollback"
-
-
      */
 
 

@@ -2,6 +2,7 @@ package com.cydeo.entity;
 
 
 import com.cydeo.enums.Status;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Table(name = "projects")
@@ -18,7 +20,8 @@ public class Project extends BaseEntity{
 
     private String projectName;
     private String projectCode;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
     private User assignedManager;
 
     private LocalDate startDate;
@@ -30,16 +33,5 @@ public class Project extends BaseEntity{
     private int completeTaskCounts;
     private int unfinishedTaskCounts;
 
-    public Project(Long id, LocalDateTime insertDateTime, Long insertUserId, LocalDateTime lastUpdateDateTime, Long lastUpdateUserId, String projectName, String projectCode, User assignedManager, LocalDate startDate, LocalDate endDate, String projectDetail, Status projectStatus, int completeTaskCounts, int unfinishedTaskCounts) {
-        super(id, insertDateTime, insertUserId, lastUpdateDateTime, lastUpdateUserId);
-        this.projectName = projectName;
-        this.projectCode = projectCode;
-        this.assignedManager = assignedManager;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.projectDetail = projectDetail;
-        this.projectStatus = projectStatus;
-        this.completeTaskCounts = completeTaskCounts;
-        this.unfinishedTaskCounts = unfinishedTaskCounts;
-    }
+
 }

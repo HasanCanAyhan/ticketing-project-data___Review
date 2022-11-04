@@ -116,4 +116,17 @@ public class UserServiceImpl implements UserService {
 
         return managers_dto;
     }
+
+    @Override
+    public void delete(String username) {
+        //we will delete from UI-Part , not from DB
+
+        //We only want to get the ones that is not deleted,so it means is_deleted needs to be false.
+
+
+        User user_entity = userRepository.findByUserName(username);
+        user_entity.setDeleted(true);
+        userRepository.save(user_entity);
+
+    }
 }
