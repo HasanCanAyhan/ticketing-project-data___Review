@@ -15,6 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Where(clause = "is_deleted=false") // put it to all repository which work with user entity, as query "where isDeleted = false;"
+//we will delete from UI-Part , not from DB
+//We only want to get the ones that is not deleted,so it means is_deleted needs to be false.
 public class User extends BaseEntity {
 
     private String firstName;
