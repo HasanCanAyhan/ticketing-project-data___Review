@@ -103,4 +103,15 @@ public class UserServiceImpl implements UserService {
         return findByUserName(user.getUserName()); // you can also return like this userRepository.save(convertedUser);
 
     }
+
+    @Override
+    public List<UserDTO> findManagers() {
+
+        List<User> managers_entity = userRepository.findAllByRole_Id(2L);
+
+        List<UserDTO> managers_dto = managers_entity.stream().map(managers -> userMapper.convertToDto(managers)).collect(Collectors.toList());
+
+
+        return managers_dto;
+    }
 }

@@ -4,6 +4,7 @@ import com.cydeo.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface UserRepository extends JpaRepository<User,Long> {
     //Repository -> DB
@@ -33,6 +34,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
 
      */
+
+
+    List<User> findAllByRole_Id(Long id);
 
 
 }

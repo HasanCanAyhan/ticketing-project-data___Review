@@ -17,5 +17,5 @@ public interface UserService {
     UserDTO update(UserDTO user); // we return UserDto for security-part
 
 
-
+    List<UserDTO> findManagers();
 }
