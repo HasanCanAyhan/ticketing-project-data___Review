@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(convertedUser);
 
-        return findByUserName(user.getUserName()); // you can also return like this userRepository.save(convertedUser);
+        return findByUserName(user.getUserName()); //method return UserDto,  you can also return like this  findByUserName(convertedUser.getUserName());
 
     }
 
