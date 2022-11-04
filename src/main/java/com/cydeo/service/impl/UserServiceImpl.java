@@ -109,7 +109,9 @@ public class UserServiceImpl implements UserService {
 
         List<User> managers_entity = userRepository.findAllByRole_Id(2L);
 
-        List<UserDTO> managers_dto = managers_entity.stream().map(managers -> userMapper.convertToDto(managers)).collect(Collectors.toList());
+        List<UserDTO> managers_dto = managers_entity.stream()
+                .map(managers -> userMapper.convertToDto(managers))
+                .collect(Collectors.toList());
 
 
         return managers_dto;

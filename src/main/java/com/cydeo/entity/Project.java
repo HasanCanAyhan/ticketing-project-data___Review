@@ -18,11 +18,7 @@ public class Project extends BaseEntity{
 
     private String projectName;
     private String projectCode;
-
-
-
-
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private User assignedManager;
 
     private LocalDate startDate;

@@ -60,6 +60,7 @@ public class ProjectController {
 
 
     /*
+
     @GetMapping("/delete/{projectCode}")
     public String deleteProject(@PathVariable("projectCode") String projectCode) {
         projectService.deleteById(projectCode);
@@ -72,34 +73,41 @@ public class ProjectController {
         return "redirect:/project/create";
     }
 
+     */
+
     @GetMapping("/update/{projectCode}")
     public String editProject(@PathVariable("projectCode") String projectCode, Model model){
 
-        model.addAttribute("project", projectService.findById(projectCode));
+        model.addAttribute("project", projectService.findByProjectCode(projectCode));
         model.addAttribute("managers", userService.findManagers());
-        model.addAttribute("projects", projectService.findAll());
+        model.addAttribute("projects", projectService.listAllProjects());
 
         return "/project/update";
 
     }
 
+
     @PostMapping("/update")
-    public String updateProject(@Valid @ModelAttribute("project") ProjectDTO project, BindingResult bindingResult, Model model) {
+    public String updateProject(@ModelAttribute("project") ProjectDTO project, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("managers", userService.findManagers());
-            model.addAttribute("projects", projectService.findAll());
+            model.addAttribute("projects", projectService.listAllProjects());
 
             return "/project/update";
 
         }
 
-        projectService.update(project);
+        //projectService.update(project);
 
         return "redirect:/project/create";
 
     }
+
+    /*
+
+
 
     @GetMapping("/manager/project-status")
     public String getProjectByManager(Model model) {
@@ -118,7 +126,7 @@ public class ProjectController {
         projectService.complete(projectService.findById(projectCode));
         return "redirect:/project/manager/project-status";
     }
-
-
      */
+
+
 }

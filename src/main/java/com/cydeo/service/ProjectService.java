@@ -9,4 +9,7 @@ public interface ProjectService {
     List<ProjectDTO> listAllProjects();
 
     void save(ProjectDTO project);
+
+    ProjectDTO findByProjectCode(String projectCode);
+
 }

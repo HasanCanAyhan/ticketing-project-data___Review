@@ -46,4 +46,15 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     }
+
+    @Override
+    public ProjectDTO findByProjectCode(String projectCode) {
+
+        Project project_entity = projectRepository.findByProjectCode(projectCode);
+
+        return projectMapper.convertToDto(project_entity);
+
+    }
+
+
 }
