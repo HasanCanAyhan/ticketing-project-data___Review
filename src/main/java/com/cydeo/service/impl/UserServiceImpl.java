@@ -65,7 +65,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteByUserName(String username) {
+    public void deleteByUserName(String username) { // delete button
+
+        //first find the current user with userName from Database, then delete it from DB by using id
+        //User currentUser = userRepository.findByUserName(username);
+        //userRepository.deleteById(currentUser.getId());
+
+        //or : you can create new method into UserRepository whose function is deleting, by using username
+        userRepository.deleteByUserName(username);
+
+
+
 
     }
 
@@ -90,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(convertedUser);
 
-        return findByUserName(user.getUserName());
+        return findByUserName(user.getUserName()); // you can also return like this userRepository.save(convertedUser);
 
     }
 }
