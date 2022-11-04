@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     //get user based on username
     User findByUserName(String username);
 
-    @Transactional
+    @Transactional  //Transactional is used for derived query , @Modifing is used for JPQL and Native Query
     void deleteByUserName(String username); //derived query
     //we got the error:
     /*
