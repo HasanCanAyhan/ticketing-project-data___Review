@@ -69,14 +69,14 @@ public class UserController {
 
     }
 
-     /*
-    @PostMapping("/update")
-    public String updateUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
+
+    @PostMapping("/update") //part2 ->> clicking on save button
+    public String updateUser(@ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("roles", roleService.findAll());
-            model.addAttribute("users", userService.findAll());
+            model.addAttribute("roles", roleService.listAllRoles());
+            model.addAttribute("users", userService.listAllUsers());
 
             return "/user/update";
 
@@ -88,13 +88,15 @@ public class UserController {
 
     }
 
+
+
     @GetMapping("/delete/{username}")
     public String deleteUser(@PathVariable("username") String username) {
-        userService.deleteById(username);
+        userService.deleteByUserName(username);
         return "redirect:/user/create";
     }
 
 
-     */
+
 
 }

@@ -68,4 +68,29 @@ public class UserServiceImpl implements UserService {
     public void deleteByUserName(String username) {
 
     }
+
+    @Override
+    public UserDTO update(UserDTO user) { // this updated user is coming from UI-Part
+        //ServiceImpl -> Repository-> DB
+        //return dto to view in the controller
+
+        //if we do like this: like save method
+        //userRepository.save(userMapper.convertToEntity(user)); it will create another user with another primary key
+
+
+        //first find the current user from DB
+        User user1 = userRepository.findByUserName(user.getUserName()); //has id,  entity from DB
+
+        //first convert user dto to user to save again into DB , then set id
+
+        User convertedUser = userMapper.convertToEntity(user); // has no id ,now
+        convertedUser.setId(user1.getId());
+
+        //save
+
+        userRepository.save(convertedUser);
+
+        return findByUserName(user.getUserName());
+
+    }
 }
