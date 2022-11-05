@@ -34,7 +34,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     This operation is named "rollback"
      */
 
-
     List<User> findAllByRole_Id(Long id);
 
 

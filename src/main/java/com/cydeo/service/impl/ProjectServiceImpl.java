@@ -6,6 +6,7 @@ import com.cydeo.enums.Status;
 import com.cydeo.mapper.ProjectMapper;
 import com.cydeo.repository.ProjectRepository;
 import com.cydeo.service.ProjectService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDTO> listAllProjects() {
 
-        List<Project> projectList = projectRepository.findAll();
+        List<Project> projectList = projectRepository.findAll(Sort.by("projectCode"));
 
         List<ProjectDTO> projectDTOList = projectList.stream().map(project -> projectMapper.convertToDto(project)).collect(Collectors.toList());
 
@@ -36,13 +37,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void save(ProjectDTO projectDto) { // project is dto here
 
-        if (projectDto.getProjectStatus() == null){
+        projectDto.setProjectStatus(Status.OPEN);
 
-            projectDto.setProjectStatus(Status.OPEN);
+        Project project = projectMapper.convertToEntity(projectDto);
 
-        }
-
-        projectRepository.save( projectMapper.convertToEntity(projectDto));
+        projectRepository.save(project);
 
 
     }

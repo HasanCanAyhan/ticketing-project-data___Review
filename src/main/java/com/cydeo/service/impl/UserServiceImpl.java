@@ -105,17 +105,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findManagers() {
+    public List<UserDTO> findAllByRoleId(Long roleId) { // to find managers and employees
+        List<User> users = userRepository.findAllByRole_Id(roleId);
 
-        List<User> managers_entity = userRepository.findAllByRole_Id(2L);
-
-        List<UserDTO> managers_dto = managers_entity.stream()
-                .map(managers -> userMapper.convertToDto(managers))
+        List<UserDTO> userDTOList = users.stream()
+                .map(user -> userMapper.convertToDto(user))
                 .collect(Collectors.toList());
 
 
-        return managers_dto;
+        return userDTOList;
     }
+
 
     @Override
     public void delete(String username) {// delete method will delete user only from UI-Part, nor from DB

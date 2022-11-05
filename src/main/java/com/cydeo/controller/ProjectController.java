@@ -1,16 +1,12 @@
 package com.cydeo.controller;
 
 import com.cydeo.dto.ProjectDTO;
-import com.cydeo.dto.UserDTO;
 import com.cydeo.service.ProjectService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/project")
@@ -30,7 +26,7 @@ public class ProjectController {
     public String createProject(Model model) {
 
         model.addAttribute("project", new ProjectDTO());
-        model.addAttribute("managers", userService.findManagers());
+        model.addAttribute("managers", userService.findAllByRoleId(2L));//we will use also for employees
         model.addAttribute("projects", projectService.listAllProjects());
 
         return "/project/create";
@@ -40,12 +36,12 @@ public class ProjectController {
 
 
 
-    @PostMapping("/create")
+    @PostMapping("/create") //save button
     public String insertProject(@ModelAttribute("project") ProjectDTO project, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("managers", userService.findManagers());
+            model.addAttribute("managers", userService.findAllByRoleId(2L));
             model.addAttribute("projects", projectService.listAllProjects());
 
             return "/project/create";
@@ -75,11 +71,12 @@ public class ProjectController {
 
      */
 
+    /*
     @GetMapping("/update/{projectCode}")
     public String editProject(@PathVariable("projectCode") String projectCode, Model model){
 
         model.addAttribute("project", projectService.findByProjectCode(projectCode));
-        model.addAttribute("managers", userService.findManagers());
+        model.addAttribute("managers", userService.findManagersByRoleId());
         model.addAttribute("projects", projectService.listAllProjects());
 
         return "/project/update";
@@ -92,7 +89,7 @@ public class ProjectController {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("managers", userService.findManagers());
+            model.addAttribute("managers", userService.findManagersByRoleId());
             model.addAttribute("projects", projectService.listAllProjects());
 
             return "/project/update";
@@ -105,7 +102,7 @@ public class ProjectController {
 
     }
 
-    /*
+
 
 
 

@@ -12,6 +12,17 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class UserDTO {
 
+
+    private Long id; // userDTO AND user has Id, and then project.assignedMananager will have this id , put this as foreign key as manager_id
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @NotBlank
     @Size(max = 15, min = 2)
     private String firstName;

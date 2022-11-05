@@ -40,7 +40,7 @@ public class Project extends BaseEntity{
     private int unfinishedTaskCounts;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "manager_id")
     private User assignedManager;
 

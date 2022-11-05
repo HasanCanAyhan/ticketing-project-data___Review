@@ -1,7 +1,6 @@
 package com.cydeo.service;
 
 import com.cydeo.dto.UserDTO;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public interface UserService {
     UserDTO update(UserDTO user); // we return UserDto for security-part
 
 
-    List<UserDTO> findManagers();
+    List<UserDTO> findAllByRoleId(Long roleId);
 
     void delete(String username);// it will delete or not show userdto in the UI-Part, still stay in db with isDeleted = true info
 }
