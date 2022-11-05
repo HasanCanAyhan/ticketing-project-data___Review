@@ -8,7 +8,9 @@ import com.cydeo.repository.TaskRepository;
 import com.cydeo.service.TaskService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,8 +39,18 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void save(TaskDTO task) {
         task.setTaskStatus(Status.OPEN);
+        task.setAssignedDate(LocalDate.now());
         Task task1 = taskMapper.convertToEntity(task);
         taskRepository.save(task1);
+
+    }
+
+    @Override
+    public void deleteByTaskId(Long id) { //soft deleting only from UI-Part
+
+        Task task = taskRepository.findById(id).get();
+        task.setIsDeleted(true);
+        taskRepository.save(task);
 
     }
 

@@ -8,4 +8,6 @@ public interface TaskService {
     List<TaskDTO> listAllTasks();
 
     void save(TaskDTO task);
+
+    void deleteByTaskId(Long id);
 }

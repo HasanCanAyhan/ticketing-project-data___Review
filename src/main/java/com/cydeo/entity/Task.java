@@ -43,6 +43,9 @@ public class Task extends BaseEntity{
     private User assignedEmployee;
 
 
+    private Boolean isDeleted = false;
+
+
     private String taskSubject;
 
     private String taskDetail;
