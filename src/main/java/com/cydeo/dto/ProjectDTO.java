@@ -14,6 +14,17 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ProjectDTO {
 
+
+    private Long id; //this id will be project_id  for task
+    // projectDTO AND project has Id, and then task.project will have this id , put this as foreign key as project_id
+    //part3 : project object should convert project_id  as a foreign key for task
+    /*
+    Foreign key means, there has to be some connection to another table.
+    Is there any user that has id as null? No, so foreign key can not get info from the users table.
+
+    project_id needs to match with one id inside the project table, that's how foreign keys work
+     */
+
     @NotBlank
     private String projectName;
 

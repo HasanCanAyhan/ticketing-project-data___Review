@@ -2,6 +2,9 @@ package com.cydeo.controller;
 
 import com.cydeo.dto.TaskDTO;
 import com.cydeo.enums.Status;
+import com.cydeo.service.ProjectService;
+import com.cydeo.service.TaskService;
+import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +16,7 @@ import javax.validation.Valid;
 @RequestMapping("/task")
 public class TaskController {
 
-    /*
+
     private final UserService userService;
     private final ProjectService projectService;
     private final TaskService taskService;
@@ -28,22 +31,24 @@ public class TaskController {
     public String createTask(Model model) {
 
         model.addAttribute("task", new TaskDTO());
-        model.addAttribute("projects", projectService.findAll());
-        model.addAttribute("employees", userService.findEmployees());
-        model.addAttribute("tasks", taskService.findAll());
+        model.addAttribute("projects", projectService.listAllProjects());
+        model.addAttribute("employees", userService.findAllByRoleId(3L));
+        model.addAttribute("tasks", taskService.listAllTasks());
 
         return "/task/create";
 
     }
 
+
+
     @PostMapping("/create")
-    public String insertTask(@Valid @ModelAttribute("task") TaskDTO task, BindingResult bindingResult, Model model) {
+    public String insertTask(@ModelAttribute("task") TaskDTO task, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("projects", projectService.findAll());
-            model.addAttribute("employees", userService.findEmployees());
-            model.addAttribute("tasks", taskService.findAll());
+            model.addAttribute("projects", projectService.listAllProjects());
+            model.addAttribute("employees", userService.findAllByRoleId(3L));
+            model.addAttribute("tasks", taskService.listAllTasks());
 
             return "/task/create";
 
@@ -54,6 +59,8 @@ public class TaskController {
         return "redirect:/task/create";
 
     }
+
+    /*
 
     @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable("id") Long id) {
