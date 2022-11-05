@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
     public void delete(String username) {// delete method will delete user only from UI-Part, nor from DB
 
         //find user from db with userName
-        //change the isDeleted field to true
+        //change the isDeleted field to true, so that we can see if this data from UI-Part is deleted or not
         //save the object in the db
 
         User user_entity = userRepository.findByUserName(username);

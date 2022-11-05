@@ -30,7 +30,7 @@ public class User extends BaseEntity {
 
 
 
-    @Transient
+
     private boolean enabled;
 
 
