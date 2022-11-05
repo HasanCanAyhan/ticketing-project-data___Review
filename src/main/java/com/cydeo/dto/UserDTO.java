@@ -13,8 +13,15 @@ import javax.validation.constraints.*;
 public class UserDTO {
 
 
-    private Long id; // userDTO AND user has Id, and then project.assignedMananager will have this id , put this as foreign key as manager_id
+    private Long id; //this id will be manager_id for project
+    // userDTO AND user has Id, and then project.assignedMananager will have this id , put this as foreign key as manager_id
+    //part3 : user object should convert manager_id as a foreign key for project
+    /*
+    Foreign key means, there has to be some connection to another table.
+    Is there any user that has id as null? No, so foreign key can not get info from the users table.
 
+    manager__id needs to match with one id inside the user table, that's how foreign keys work
+     */
     public Long getId() {
         return id;
     }

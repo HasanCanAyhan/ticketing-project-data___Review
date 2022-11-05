@@ -49,10 +49,29 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void update(ProjectDTO projectDTO) {
 
+        //find project from db
+        Project project_entity = projectRepository.findByProjectCode(projectDTO.getProjectCode()); //has id
+
+        //dto -->> entity
+        Project convertedProject = projectMapper.convertToEntity(projectDTO); // has no id, it will be saved into db
+
+        //before saving, set those fields
+        convertedProject.setId(project_entity.getId());
+        convertedProject.setProjectStatus(project_entity.getProjectStatus());
+
+        projectRepository.save(convertedProject);
+
     }
 
     @Override
-    public void delete(String code) {
+    public void delete(String code) { // soft deleting :we changed just field ,  we are not deleting data from db
+
+        Project project = projectRepository.findByProjectCode(code);
+
+        project.setDeleted(true);
+
+        projectRepository.save(project);
+
 
     }
 
@@ -62,6 +81,16 @@ public class ProjectServiceImpl implements ProjectService {
         Project project_entity = projectRepository.findByProjectCode(projectCode);
 
         return projectMapper.convertToDto(project_entity);
+
+    }
+
+    @Override
+    public void complete(String projectCode) {
+
+        Project project = projectRepository.findByProjectCode(projectCode);
+        project.setProjectStatus(Status.COMPLETE); // change the status and then save
+        projectRepository.save(project);
+
 
     }
 

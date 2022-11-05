@@ -16,4 +16,5 @@ public interface ProjectService {
 
     ProjectDTO findByProjectCode(String projectCode);
 
+    void complete(String projectCode);
 }

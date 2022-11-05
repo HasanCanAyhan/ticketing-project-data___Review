@@ -55,28 +55,34 @@ public class ProjectController {
     }
 
 
-    /*
+
 
     @GetMapping("/delete/{projectCode}")
     public String deleteProject(@PathVariable("projectCode") String projectCode) {
-        projectService.deleteById(projectCode);
+        projectService.delete(projectCode);
         return "redirect:/project/create";
     }
+
+
+
+
 
     @GetMapping("/complete/{projectCode}")
     public String completeProject(@PathVariable("projectCode") String projectCode) {
-        projectService.complete(projectService.findById(projectCode));
+        projectService.complete(projectCode);
         return "redirect:/project/create";
     }
 
-     */
 
-    /*
-    @GetMapping("/update/{projectCode}")
+
+
+
+
+    @GetMapping("/update/{projectCode}") //edit-part
     public String editProject(@PathVariable("projectCode") String projectCode, Model model){
 
-        model.addAttribute("project", projectService.findByProjectCode(projectCode));
-        model.addAttribute("managers", userService.findManagersByRoleId());
+        model.addAttribute("project", projectService.findByProjectCode(projectCode));//to select project which will be updated
+        model.addAttribute("managers", userService.findAllByRoleId(2L));
         model.addAttribute("projects", projectService.listAllProjects());
 
         return "/project/update";
@@ -84,19 +90,19 @@ public class ProjectController {
     }
 
 
-    @PostMapping("/update")
+    @PostMapping("/update") // for update : save button
     public String updateProject(@ModelAttribute("project") ProjectDTO project, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("managers", userService.findManagersByRoleId());
+            model.addAttribute("managers", userService.findAllByRoleId(2L));
             model.addAttribute("projects", projectService.listAllProjects());
 
             return "/project/update";
 
         }
 
-        //projectService.update(project);
+        projectService.update(project);
 
         return "redirect:/project/create";
 
@@ -104,7 +110,7 @@ public class ProjectController {
 
 
 
-
+/*
 
     @GetMapping("/manager/project-status")
     public String getProjectByManager(Model model) {
