@@ -19,6 +19,7 @@ import java.util.List;
 //We only want to get the ones that is not deleted,so it means is_deleted needs to be false.
 public class User extends BaseEntity {
 
+
     private String firstName;
     private String lastName;
 

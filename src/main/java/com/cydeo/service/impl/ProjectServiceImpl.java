@@ -98,6 +98,39 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDTO> getCountedListOfProjectDTO(UserDTO manager) {
 
+        /*
+
+        // we have set Unfinished-Completed fields
+
+        List<ProjectDTO> projectList =
+
+                // we found first projects which belong to the specific manager
+                readAll().stream().filter(project -> project.getAssignedManager().equals(manager))
+                        .map(project ->  {
+                            // all tasks belongs to the project
+
+                            int unfinishedTasksCount = (int) taskService.readAll().stream().filter(task -> task.getProject().getAssignedManager().equals(manager) )
+                                    .filter(task->task.getProject().equals(project) )
+                                    .filter(task -> task.getTaskStatus() != Status.COMPLETE).count();
+
+                            int completedTasksCount = (int) taskService.readAll().stream().filter(task -> task.getProject().getAssignedManager().equals(manager))
+                                            .filter(task -> task.getProject().equals(project))
+                                                    .filter(task -> task.getTaskStatus() == Status.COMPLETE).count();
+
+                            project.setUnfinishedTasksCount(unfinishedTasksCount);
+                            project.setCompletedTasksCount(completedTasksCount);
+
+                            return project;
+
+                        } ).collect(Collectors.toList());
+
+
+        return projectList;
+         */
+
+
+
+
         List<Project> projectList = projectRepository.findAllByAssignedManager(manager);
 
 
