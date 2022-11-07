@@ -1,5 +1,6 @@
 package com.cydeo.service.impl;
 
+import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.TaskDTO;
 import com.cydeo.entity.Task;
 import com.cydeo.enums.Status;
@@ -48,26 +49,30 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteByTaskId(Long id) { //soft deleting only from UI-Part
 
-        Task task = taskRepository.findById(id).get();
-        task.setIsDeleted(true);
-        taskRepository.save(task);
+        Optional<Task> task = taskRepository.findById(id);
+
+        if(task.isPresent()){
+            task.get().setIsDeleted(true);
+            taskRepository.save(task.get());
+        }
+
 
     }
 
     @Override
-    public TaskDTO findById(Long taskId) {
+    public TaskDTO findById(Long taskId) { // for selecting the person who will be updated
 
-        Task task = taskRepository.findById(taskId).get();
+        Task task = taskRepository.findById(taskId).orElseThrow();
 
         return taskMapper.convertToDto(task);
 
     }
 
     @Override
-    public void update(TaskDTO task) {
+    public void update(TaskDTO task) { // taskDto has already id
 
         //find task from db
-        Task task1 = taskRepository.findById(task.getId()).get(); // has id
+        Task task1 = taskRepository.findById(task.getId()).orElseThrow(); // has id
 
         //convert taskDto -> task entity
         Task convertedTask = taskMapper.convertToEntity(task);
@@ -77,6 +82,16 @@ public class TaskServiceImpl implements TaskService {
 
         taskRepository.save(convertedTask);
 
+    }
+
+    @Override
+    public int getCountsAllUnfinishedTasks(ProjectDTO projectDTO) {
+        return taskRepository.fetchAllTasksUnfinished(projectDTO.getProjectCode());
+    }
+
+    @Override
+    public int getCountsAllFinishedTasks(ProjectDTO projectDTO) {
+        return taskRepository.fetchAllTasksCompleted(projectDTO.getProjectCode());
     }
 
 

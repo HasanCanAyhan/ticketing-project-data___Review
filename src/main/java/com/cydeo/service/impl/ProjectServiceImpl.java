@@ -3,10 +3,14 @@ package com.cydeo.service.impl;
 import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.Project;
+import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
 import com.cydeo.mapper.ProjectMapper;
+import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.ProjectRepository;
 import com.cydeo.service.ProjectService;
+import com.cydeo.service.TaskService;
+import com.cydeo.service.UserService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +23,17 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper) {
+    private final UserService userService;
+    private final UserMapper userMapper;
+
+    private final TaskService taskService;
+
+    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, UserService userService, UserMapper userMapper, TaskService taskService) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
+        this.userService = userService;
+        this.userMapper = userMapper;
+        this.taskService = taskService;
     }
 
 
@@ -96,52 +108,79 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDTO> getCountedListOfProjectDTO(UserDTO manager) {
+    public List<ProjectDTO> listAllProjectDetails() {
 
-        /*
+        //this way is by not using repository , only service
+        /* this way is by not using repository , only service
 
-        // we have set Unfinished-Completed fields
+        // first find the manager
+        UserDTO managerDTO = userService.findByUserName("harold@manager.com");
 
-        List<ProjectDTO> projectList =
+        List<ProjectDTO> projectDTOList = listAllProjects().stream()
+                .filter(projectDTO -> projectDTO.getAssignedManager().getUserName().equals(managerDTO.getUserName())).collect(Collectors.toList());
 
-                // we found first projects which belong to the specific manager
-                readAll().stream().filter(project -> project.getAssignedManager().equals(manager))
-                        .map(project ->  {
-                            // all tasks belongs to the project
+        //completedtask and uncompleted tasks
 
-                            int unfinishedTasksCount = (int) taskService.readAll().stream().filter(task -> task.getProject().getAssignedManager().equals(manager) )
-                                    .filter(task->task.getProject().equals(project) )
-                                    .filter(task -> task.getTaskStatus() != Status.COMPLETE).count();
+        List<ProjectDTO> projectDTOS_with2Fields = projectDTOList.stream().map(projectDTO -> {
 
-                            int completedTasksCount = (int) taskService.readAll().stream().filter(task -> task.getProject().getAssignedManager().equals(manager))
-                                            .filter(task -> task.getProject().equals(project))
-                                                    .filter(task -> task.getTaskStatus() == Status.COMPLETE).count();
+            int a =  (int) taskService.listAllTasks().stream()
+                    .filter(taskDTO -> taskDTO.getProject().getProjectCode().equals(projectDTO.getProjectCode()))
+                    .filter(taskDTO -> taskDTO.getTaskStatus() != Status.COMPLETE).count();
 
-                            project.setUnfinishedTasksCount(unfinishedTasksCount);
-                            project.setCompletedTasksCount(completedTasksCount);
+            projectDTO.setUnfinishedTaskCounts(a);
 
-                            return project;
+            int b = (int) taskService.listAllTasks().stream()
+                    .filter(taskDTO -> taskDTO.getProject().getProjectCode().equals(projectDTO.getProjectCode()))
+                    .filter(taskDTO -> taskDTO.getTaskStatus() == Status.COMPLETE).count();
 
-                        } ).collect(Collectors.toList());
+            projectDTO.setCompleteTaskCounts(b);
+
+            return projectDTO;
+
+        }).collect(Collectors.toList());
 
 
-        return projectList;
+        return projectDTOS_with2Fields;
+
          */
 
 
+        //This way is by using repository
+
+        // first find the manager
+        UserDTO currentManagerDTO = userService.findByUserName("harold@manager.com");//Manager will come from Security Topic
+        User user = userMapper.convertToEntity(currentManagerDTO);//find the user from DB
+
+        //go to DB, give me all the projects assigned to manager login in the system
+        List<Project> projectList = projectRepository.findAllByAssignedManager(user);//all projects belogs to that manager(user)
 
 
-        List<Project> projectList = projectRepository.findAllByAssignedManager(manager);
+        List<ProjectDTO> projectDTOList = projectList.stream().map(project -> projectMapper.convertToDto(project)).collect(Collectors.toList());
 
+        return projectDTOList.stream().map(projectDTO -> {
 
+            int countsAllUnfinishedTasks = taskService.getCountsAllUnfinishedTasks(projectDTO);
+            int countsAllFinishedTasks = taskService.getCountsAllFinishedTasks(projectDTO);
 
-                List<ProjectDTO> projectDTOList = projectList.stream()
-                .map(project -> projectMapper.convertToDto(project))
-                .collect(Collectors.toList());
+            projectDTO.setUnfinishedTaskCounts(countsAllUnfinishedTasks);
+            projectDTO.setCompleteTaskCounts(countsAllFinishedTasks);
 
-        return projectDTOList;
+            return projectDTO;
+
+        }).collect(Collectors.toList());
+
 
     }
+
+
+
+    //  3/1   open ,   2/2 InProgress
+
+
+
+
+
+
 
 
 }

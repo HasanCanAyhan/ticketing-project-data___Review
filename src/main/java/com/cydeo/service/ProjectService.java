@@ -19,5 +19,8 @@ public interface ProjectService {
 
     void complete(String projectCode);
 
-    List<ProjectDTO> getCountedListOfProjectDTO(UserDTO manager);
+
+    List<ProjectDTO> listAllProjectDetails();
+
+
 }
