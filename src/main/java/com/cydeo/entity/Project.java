@@ -22,7 +22,9 @@ public class Project extends BaseEntity{
 
     private String projectName;
 
+    @Column(unique = true) // project code has to be unique, so that annotations is not ganna let you create project with same code
     private String projectCode;
+
 
 
     @Column(columnDefinition = "DATE")
