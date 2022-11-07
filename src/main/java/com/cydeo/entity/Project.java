@@ -36,9 +36,6 @@ public class Project extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Status projectStatus;
 
-    private int completeTaskCounts;
-    private int unfinishedTaskCounts;
-
 
     @ManyToOne
     @JoinColumn(name = "manager_id")

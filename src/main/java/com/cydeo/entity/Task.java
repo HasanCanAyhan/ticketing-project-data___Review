@@ -39,7 +39,7 @@ public class Task extends BaseEntity{
 
 
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "assigned_employee_id")
     private User assignedEmployee;
 
 
