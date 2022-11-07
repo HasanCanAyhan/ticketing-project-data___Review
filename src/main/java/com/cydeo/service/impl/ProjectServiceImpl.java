@@ -157,15 +157,15 @@ public class ProjectServiceImpl implements ProjectService {
 
         List<ProjectDTO> projectDTOList = projectList.stream().map(project -> projectMapper.convertToDto(project)).collect(Collectors.toList());
 
-        return projectDTOList.stream().map(projectDTO -> {
+        return projectDTOList.stream().map(project -> {
 
-            int countsAllUnfinishedTasks = taskService.getCountsAllUnfinishedTasks(projectDTO);
-            int countsAllFinishedTasks = taskService.getCountsAllFinishedTasks(projectDTO);
+            int countsAllUnfinishedTasks = taskService.getCountsAllUnfinishedTasks(project);
+            int countsAllFinishedTasks = taskService.getCountsAllFinishedTasks(project);
 
-            projectDTO.setUnfinishedTaskCounts(countsAllUnfinishedTasks);
-            projectDTO.setCompleteTaskCounts(countsAllFinishedTasks);
+            project.setUnfinishedTaskCounts(countsAllUnfinishedTasks);
+            project.setCompleteTaskCounts(countsAllFinishedTasks);
 
-            return projectDTO;
+            return project;
 
         }).collect(Collectors.toList());
 
