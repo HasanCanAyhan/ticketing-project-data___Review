@@ -147,12 +147,12 @@ public class ProjectServiceImpl implements ProjectService {
 
         //This way is by using repository
 
-        // first find the manager
+        // first find the manager who log in
         UserDTO currentManagerDTO = userService.findByUserName("harold@manager.com");//Manager will come from Security Topic
         User user = userMapper.convertToEntity(currentManagerDTO);//find the user from DB
 
         //go to DB, give me all the projects assigned to manager login in the system
-        List<Project> projectList = projectRepository.findAllByAssignedManager(user);//all projects belogs to that manager(user)
+        List<Project> projectList = projectRepository.findAllByAssignedManager(user);//all projects belongs to that manager(user)
 
 
         List<ProjectDTO> projectDTOList = projectList.stream().map(project -> projectMapper.convertToDto(project)).collect(Collectors.toList());
