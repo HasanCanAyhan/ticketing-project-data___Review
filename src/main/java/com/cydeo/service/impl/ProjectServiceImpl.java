@@ -171,6 +171,9 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     }
+
+    //Harold is logginin in the system
+    //Harold is able to see projects assigned to himself with finished and unfinished count tasks for each project
     //  3/1   open ,   2/2 InProgress
 
 
