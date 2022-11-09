@@ -115,6 +115,10 @@ public class ProjectServiceImpl implements ProjectService {
         project.setProjectStatus(Status.COMPLETE); // change the status and then save
         projectRepository.save(project);
 
+        //bug3 : part5
+        //bug is: if we complete one project , we should complete also tasks related to this deleted project.
+        taskService.completeByProject(projectMapper.convertToDto(project));
+
 
     }
 

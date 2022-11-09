@@ -23,4 +23,6 @@ public interface TaskService {
     int getCountsAllFinishedTasks(ProjectDTO projectDTO);
 
     void deleteByProject(ProjectDTO projectDTO); // for bug2
+
+    void completeByProject(ProjectDTO projectDTO);// for bug3
 }
