@@ -184,12 +184,22 @@ public class ProjectServiceImpl implements ProjectService {
 
         }).collect(Collectors.toList());
 
+        //Harold is logginin in the system
+        //Harold is able to see projects assigned to himself with finished and unfinished count tasks for each project
+        //  3/1   open ,   2/2 InProgress
+
+
 
     }
 
-    //Harold is logginin in the system
-    //Harold is able to see projects assigned to himself with finished and unfinished count tasks for each project
-    //  3/1   open ,   2/2 InProgress
+    @Override
+    public List<ProjectDTO> listAllNonCompletedByAssignedManager(UserDTO assignedManager) { // for bug 6
+         List<Project> projects = projectRepository
+                 .findAllByProjectStatusIsNotAndAssignedManager(Status.COMPLETE, userMapper.convertToEntity(assignedManager));
+
+         return projects.stream().map(project -> projectMapper.convertToDto(project)).collect(Collectors.toList());
+    }
+
 
 
 

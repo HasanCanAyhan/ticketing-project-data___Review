@@ -2,6 +2,7 @@ package com.cydeo.service;
 
 import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.TaskDTO;
+import com.cydeo.dto.UserDTO;
 import com.cydeo.enums.Status;
 
 import java.util.List;
@@ -29,4 +30,5 @@ public interface TaskService {
     List<TaskDTO> listAllTasksByStatusIsNot(Status status); // for pending tasks related to employee who login the system
     List<TaskDTO> listAllTasksByStatus(Status status);// for archive tasks related to employee who login the system
 
+    List<TaskDTO> listAllNonCompletedByAssignedEmployee(UserDTO assignedEmployee); // for bug 6
 }

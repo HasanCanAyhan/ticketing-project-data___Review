@@ -1,9 +1,13 @@
 package com.cydeo.service.impl;
 
+import com.cydeo.dto.ProjectDTO;
+import com.cydeo.dto.TaskDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.User;
 import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.UserRepository;
+import com.cydeo.service.ProjectService;
+import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -19,9 +23,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    private final ProjectService projectService;
+
+    private final TaskService taskService;
+
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, ProjectService projectService, TaskService taskService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.projectService = projectService;
+        this.taskService = taskService;
     }
 
 
@@ -125,8 +135,41 @@ public class UserServiceImpl implements UserService {
         //save the object in the db
 
         User user_entity = userRepository.findByUserName(username);
-        user_entity.setDeleted(true);
-        userRepository.save(user_entity);
+
+        if (checkIfUserCanBeDeleted(user_entity)){
+            user_entity.setDeleted(true);
+            userRepository.save(user_entity);
+        }
+
+
 
     }
+
+
+    //Bug6 : if manager has some projects which is not complete, we should not delete him from the userList -ui part
+    //       if employee has some tasks which is not complete, we should not delete him from the userList -ui part
+
+    private boolean checkIfUserCanBeDeleted(User user){ // bcs method is private,we use this method just inside this class,  you can pass user enitity or userDto
+
+
+        switch (user.getRole().getDescription()){
+
+            case "Manager":
+               List<ProjectDTO> projectDTOList = projectService.listAllNonCompletedByAssignedManager(userMapper.convertToDto(user));
+               return projectDTOList.size() == 0;//we can delete manager
+
+            case "Employee":
+                List<TaskDTO> taskDTOList = taskService.listAllNonCompletedByAssignedEmployee(userMapper.convertToDto(user));
+                return taskDTOList.size() == 0;//we can delete employee
+
+            default:
+                return true;
+
+        }
+
+
+
+
+    }
+
 }
