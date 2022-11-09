@@ -28,4 +28,5 @@ public interface TaskService {
 
     List<TaskDTO> listAllTasksByStatusIsNot(Status status); // for pending tasks related to employee who login the system
     List<TaskDTO> listAllTasksByStatus(Status status);// for archive tasks related to employee who login the system
+
 }

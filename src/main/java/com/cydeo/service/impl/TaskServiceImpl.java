@@ -146,6 +146,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> listAllTasksByStatus(Status status) {
+        // all tasks related to the employee log in the system
         UserDTO loggedInUser_employee = userService.findByUserName("john@employee.com");
         User employee = userMapper.convertToEntity(loggedInUser_employee);
 
