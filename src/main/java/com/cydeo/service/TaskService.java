@@ -25,4 +25,7 @@ public interface TaskService {
     void deleteByProject(ProjectDTO projectDTO); // for bug2
 
     void completeByProject(ProjectDTO projectDTO);// for bug3
+
+    List<TaskDTO> listAllTasksByStatusIsNot(Status status); // for pending tasks related to employee who login the system
+    List<TaskDTO> listAllTasksByStatus(Status status);// for archive tasks related to employee who login the system
 }

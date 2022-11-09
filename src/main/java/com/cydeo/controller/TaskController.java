@@ -112,19 +112,23 @@ public class TaskController {
     }
 
 
-    /*
 
-    @GetMapping("/employee/pending-tasks")
+
+    @GetMapping("/employee/pending-tasks") // all tasks related to the employee log in the system
     public String employeePendingTasks(Model model) {
-        model.addAttribute("tasks", taskService.findAllTasksByStatusIsNot(Status.COMPLETE));
+        model.addAttribute("tasks", taskService.listAllTasksByStatusIsNot(Status.COMPLETE));
         return "/task/pending-tasks";
     }
 
+
+
     @GetMapping("/employee/archive")
     public String employeeArchivedTasks(Model model) {
-        model.addAttribute("tasks", taskService.findAllTasksByStatus(Status.COMPLETE));
+        model.addAttribute("tasks", taskService.listAllTasksByStatus(Status.COMPLETE));
         return "/task/archive";
     }
+
+    /*
 
     @GetMapping("/employee/edit/{id}")
     public String employeeEditTask(@PathVariable Long id, Model model) {

@@ -1,7 +1,10 @@
 package com.cydeo.repository;
 
+import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.Project;
 import com.cydeo.entity.Task;
+import com.cydeo.entity.User;
+import com.cydeo.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,4 +21,8 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
 
 
     List<Task> findAllByProject(Project project); //for bug2
+
+    List<Task> findAllByTaskStatusIsNotAndAssignedEmployee(Status status, User loggedInUser_employee);
+
+    List<Task> findAllByTaskStatusAndAssignedEmployee(Status status, User employee);
 }

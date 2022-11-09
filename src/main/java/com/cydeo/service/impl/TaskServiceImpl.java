@@ -2,13 +2,17 @@ package com.cydeo.service.impl;
 
 import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.TaskDTO;
+import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.Project;
 import com.cydeo.entity.Task;
+import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
 import com.cydeo.mapper.ProjectMapper;
 import com.cydeo.mapper.TaskMapper;
+import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.TaskRepository;
 import com.cydeo.service.TaskService;
+import com.cydeo.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,10 +28,16 @@ public class TaskServiceImpl implements TaskService {
 
     private  final ProjectMapper projectMapper;
 
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper) {
+    private final UserService userService;
+
+    private final UserMapper userMapper;
+
+    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper, UserService userService, UserMapper userMapper) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
         this.projectMapper = projectMapper;
+        this.userService = userService;
+        this.userMapper = userMapper;
     }
 
 
@@ -74,16 +84,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void update(TaskDTO task) { // taskDto has already id
+    public void update(TaskDTO taskDTO) { // taskDto has already id
 
         //find task from db
-        Task task1 = taskRepository.findById(task.getId()).orElseThrow(); // has id
+        Task task1 = taskRepository.findById(taskDTO.getId()).orElseThrow(); // has id
 
         //convert taskDto -> task entity
-        Task convertedTask = taskMapper.convertToEntity(task);
+        Task convertedTask = taskMapper.convertToEntity(taskDTO);
         //set
         convertedTask.setAssignedDate(task1.getAssignedDate());
-        convertedTask.setTaskStatus(task1.getTaskStatus());
+
+        //bug4
+        //convertedTask.setTaskStatus(task1.getTaskStatus());
+        convertedTask.setTaskStatus(taskDTO.getTaskStatus() == null ? task1.getTaskStatus() : taskDTO.getTaskStatus()  );
+        //            if it is coming null from ui-part , get me this from DB            :   else if there is a status get me just task's status
 
         taskRepository.save(convertedTask);
 
@@ -118,6 +132,27 @@ public class TaskServiceImpl implements TaskService {
             update(taskDTO);
 
         });
+    }
+
+    @Override
+    public List<TaskDTO> listAllTasksByStatusIsNot(Status status) {
+        // all tasks related to the employee log in the system
+        UserDTO loggedInUser_employee = userService.findByUserName("john@employee.com");
+        User employee = userMapper.convertToEntity(loggedInUser_employee);
+        List<Task> tasks = taskRepository.findAllByTaskStatusIsNotAndAssignedEmployee(status,employee);
+
+        return tasks.stream().map(task -> taskMapper.convertToDto(task)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskDTO> listAllTasksByStatus(Status status) {
+        UserDTO loggedInUser_employee = userService.findByUserName("john@employee.com");
+        User employee = userMapper.convertToEntity(loggedInUser_employee);
+
+        List<Task> tasks = taskRepository.findAllByTaskStatusAndAssignedEmployee(status,employee);
+
+        return tasks.stream().map(task -> taskMapper.convertToDto(task)).collect(Collectors.toList());
+
     }
 
 
