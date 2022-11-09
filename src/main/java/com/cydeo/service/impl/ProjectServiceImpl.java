@@ -74,6 +74,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectRepository.save(convertedProject);
 
+
     }
 
     @Override
@@ -83,7 +84,17 @@ public class ProjectServiceImpl implements ProjectService {
 
         project.setDeleted(true);
 
+        //bug1 solution here : part5
+        //bug is : if we delete project with projectCode from UI-Part, we want to use same projectCode again
+        //then add something according to business logic
+        project.setProjectCode(project.getProjectCode() + "-" + project.getId()); //SP00-1
+
         projectRepository.save(project);
+
+
+        //bug2 : part5
+        //bug is: if we delete one project , we should delete also tasks related to this deleted project.
+        taskService.deleteByProject(projectMapper.convertToDto(project));
 
 
     }

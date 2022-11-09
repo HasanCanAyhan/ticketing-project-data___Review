@@ -17,5 +17,5 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
     int fetchAllTasksCompleted(String projectCode); //native query
 
 
-
+    List<Task> findAllByProject(Project project); //for bug2
 }
