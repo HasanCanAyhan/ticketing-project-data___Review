@@ -131,14 +131,14 @@ public class ProjectController {
 
 
 
-    /*
+
     @GetMapping("/manager/complete/{projectCode}")
     public String managerCompleteProject(@PathVariable("projectCode") String projectCode) {
         projectService.complete(projectCode);
         return "redirect:/project/manager/project-status";
     }
 
-     */
+
 
 
 
