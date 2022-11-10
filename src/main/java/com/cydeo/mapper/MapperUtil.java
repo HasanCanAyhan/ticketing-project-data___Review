@@ -15,13 +15,16 @@ public class MapperUtil {
         this.modelMapper = modelMapper;
     }
 
-    //1.Implementation
     /*
+    //1.Implementation
     public <T> T convert(Object objToBeConverted,T convertedObject){
         return modelMapper.map(objToBeConverted, (Type) convertedObject.getClass());
     }
 
+
      */
+
+
 
     //2.Implementation
     public <T> T convert(Object objToBeConverted,Class<T> convertedObject){
