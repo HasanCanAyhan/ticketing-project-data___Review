@@ -24,28 +24,6 @@ public class RoleMapper extends ModelMapper implements Mapper<Role,RoleDTO> {
     //    classes will extend ModelMapper implement Mapper Interface
 
 
-    /*
-    private final ModelMapper modelMapper;
-
-    public RoleMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
-
-    public Role convertToEntity(RoleDTO dto){ // for database
-
-        return modelMapper.map(dto,Role.class);
-
-    }
-
-
-    public RoleDTO convertToDto(Role entity){ // for ui-part
-
-        return modelMapper.map(entity,RoleDTO.class);
-
-    }
-
-
-     */
 
 
 }

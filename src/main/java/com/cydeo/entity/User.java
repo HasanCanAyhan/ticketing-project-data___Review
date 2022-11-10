@@ -24,7 +24,8 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
 
-    private String userName;
+    @Column(unique = true)
+    private String userName; // like projectCode bug 11
 
 
     private String passWord;
