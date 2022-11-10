@@ -30,7 +30,7 @@ public class ProjectController {
 
         model.addAttribute("project", new ProjectDTO());
         model.addAttribute("managers", userService.findAllByRoleId(2L));//we will use also for employees
-        model.addAttribute("projects", projectService.listAllProjects());
+        model.addAttribute("projects", projectService.listAllProjectDetails()); // for bug 10
 
         return "/project/create";
 
@@ -45,7 +45,7 @@ public class ProjectController {
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("managers", userService.findAllByRoleId(2L));
-            model.addAttribute("projects", projectService.listAllProjects());
+            model.addAttribute("projects", projectService.listAllProjectDetails());
 
             return "/project/create";
 
@@ -86,7 +86,7 @@ public class ProjectController {
 
         model.addAttribute("project", projectService.findByProjectCode(projectCode));//to select project which will be updated
         model.addAttribute("managers", userService.findAllByRoleId(2L));
-        model.addAttribute("projects", projectService.listAllProjects());
+        model.addAttribute("projects", projectService.listAllProjectDetails());
 
         return "/project/update";
 
@@ -99,7 +99,7 @@ public class ProjectController {
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("managers", userService.findAllByRoleId(2L));
-            model.addAttribute("projects", projectService.listAllProjects());
+            model.addAttribute("projects", projectService.listAllProjectDetails());
 
             return "/project/update";
 

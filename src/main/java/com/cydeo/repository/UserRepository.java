@@ -10,8 +10,14 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User,Long> {
     //Repository -> DB
 
+
+    List<User> findAllByIsDeletedOrderByFirstNameDesc(Boolean deleted);// for bug 9
+
+
     //get user based on username
-    User findByUserName(String username); //select * from users where user_name = 'username' and is_deleted = false;
+    //User findByUserName(String username); //select * from users where user_name = 'username' and is_deleted = false;
+    User findByUserNameAndIsDeleted(String username, Boolean deleted); // for bug 9
+
 
     @Transactional  //Transactional is used for derived query , @Modifing is used for JPQL and Native Query
     void deleteByUserName(String username); //derived query
@@ -35,7 +41,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
     This operation is named "rollback"
      */
 
-    List<User> findAllByRole_Id(Long id);
+    //List<User> findAllByRole_Id(Long id);
+
+    List<User> findAllByRole_IdAndIsDeleted(Long id,Boolean deleted); // for bug 9
 
 
 

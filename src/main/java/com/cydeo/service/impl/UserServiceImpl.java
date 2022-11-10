@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private final TaskService taskService;
 
+    //                                                                           @Lazy : cycle error:  bug 7
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, @Lazy ProjectService projectService, @Lazy TaskService taskService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
@@ -43,7 +44,9 @@ public class UserServiceImpl implements UserService {
         //Service Impl return DTO
         //Repository return Entity
 
-        List<User> userList = userRepository.findAll(Sort.by("firstName")); // go to DB and brings the users : entity
+        //List<User> userList = userRepository.findAll(Sort.by("firstName")); // go to DB and brings the users : entity
+
+        List<User> userList = userRepository.findAllByIsDeletedOrderByFirstNameDesc(false); // for bug 9
 
         // we should return DTO in the ServiceImpl, then it will go to controller for UI -Part
 
@@ -56,7 +59,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findByUserName(String username) { // update button ,we click on update button, give me selected user from DB
 
-        User user = userRepository.findByUserName(username);
+        //User user = userRepository.findByUserName(username);
+        User user = userRepository.findByUserNameAndIsDeleted(username,false); // for bug 9
 
         return userMapper.convertToDto(user);
     }
@@ -100,7 +104,8 @@ public class UserServiceImpl implements UserService {
 
 
         //first find the current user from DB
-        User user1 = userRepository.findByUserName(user.getUserName()); //has id,  entity from DB
+        //User user1 = userRepository.findByUserName(user.getUserName()); //has id,  entity from DB
+        User user1 = userRepository.findByUserNameAndIsDeleted(user.getUserName(), false); //for bug 9
 
         //first convert user dto to user to save again into DB , then set id
 
@@ -117,7 +122,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findAllByRoleId(Long roleId) { // to find managers and employees
-        List<User> users = userRepository.findAllByRole_Id(roleId);
+        //List<User> users = userRepository.findAllByRole_Id(roleId);
+        List<User> users = userRepository.findAllByRole_IdAndIsDeleted(roleId,false); // for bug 9
 
         List<UserDTO> userDTOList = users.stream()
                 .map(user -> userMapper.convertToDto(user))
@@ -135,10 +141,13 @@ public class UserServiceImpl implements UserService {
         //change the isDeleted field to true, so that we can see if this data from UI-Part is deleted or not
         //save the object in the db
 
-        User user_entity = userRepository.findByUserName(username);
+        //User user_entity = userRepository.findByUserName(username);
+        User user_entity = userRepository.findByUserNameAndIsDeleted(username,false); // for bug 9
 
         if (checkIfUserCanBeDeleted(user_entity)){
             user_entity.setDeleted(true);
+            //bug 8 : when we save user , we should add more one field like getId(), in order to use again userName from the UI-Part
+            user_entity.setUserName(user_entity.getUserName() + "-" + user_entity.getId());//harold@manager.com-2
             userRepository.save(user_entity);
         }
 
